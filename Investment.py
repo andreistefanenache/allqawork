@@ -8,5 +8,5 @@ Tip: Do not start writing code until you've a plan of action!
 from math import log
 initial=int(input("Please enter your initial investment")) or 100
 target=int(input("Please enter your target")) or 1000
-interest_rate=int(input("Please enter the yearly interest rate")) or 1.1
+interest_rate=float(input("Please enter the yearly interest rate")) or 1.1
 print(log(target/initial,interest_rate),"years")
