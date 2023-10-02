@@ -6,4 +6,7 @@ Tip: Do not start writing code until you've a plan of action!
 3.	Save and run.   
  """
 from math import log
-print(log(1000/100,1.1),"years")
+initial=int(input("Please enter your initial investment")) or 100
+target=int(input("Please enter your target")) or 1000
+interest_rate=int(input("Please enter the yearly interest rate")) or 1.1
+print(log(target/initial,interest_rate),"years")
