@@ -11,7 +11,7 @@ Every time you find a vowel you must increase a counter (an integer variable).
 In the next chapter (Lists) you'll discover a much easier way of performing this task.
 4.	Save and run.
  """
-word = input("Please enter your word: ")
+word = input("Please enter your word: ").lower()
 counter = 0
 for i in range(len(word)):
     if word[i] == 'a' or word[i] == 'e' or word[i] == 'i' or word[i] == 'o' or word[i] == 'u':
