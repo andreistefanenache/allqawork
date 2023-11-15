@@ -1,0 +1,50 @@
+- hosts: all
+  tasks:
+  - name: "Ping"
+    ping:
+  - name: "nginx"
+    apt:
+      name: nginx
+      state: present
+      update_cache: true
+    become: true
+- hosts: all
+  tasks:
+  - name: "wget"
+    apt:
+      name: wget
+      state: present
+      update_cache: true
+    become: true
+  - name: "NGINX wow"
+    service:
+      name: nginx
+      state: restarted
+    become: true
+- hosts: other
+  tasks:
+  - name: "unzip"
+    apt:
+      name: unzip
+      state: present
+      update_cache: true
+    become: true
+- hosts: demo
+  tasks:
+  - name: "echo a command"
+    shell: echo "hello world" > file
+- hosts: demo
+  tasks:
+  - name: Copy file with owner and permissions
+    copy:
+      src: ./index.nginx-debian.html
+      dest: /var/www/html/index.nginx-debian.html
+      owner: root
+      group: root
+      mode: '0644'
+    become: true
+- hosts: all
+  tasks:
+  - name: Install docker
+    shell: curl https://get.docker.com | bash
+  become: true
