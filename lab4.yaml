@@ -1,0 +1,31 @@
+- hosts: all
+  vars:
+    package: unzip
+  tasks:
+  - name: "Print out name"
+    debug:
+      msg: "your name"
+  - name: "nginx"
+    apt:
+      name: "{{ package }}"
+      state: present
+      update_cache: true
+    become: true
+  - name: "nginx"
+    apt:
+      name: nginx
+      state: present
+      update_cache: true
+    become: true
+    notify:
+    - Restart nginx
+  - name: Git clone specified repo
+    git:
+      repo: "{{ repository }}"
+      path: "{{ path }}"
+  handlers:
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted
+      become: true
