@@ -1,0 +1,22 @@
+- name: Add devs group
+  group:
+    name: devs
+  become: true
+- name: Create user and add to devs
+  user:
+    name: yourname
+    groups: devs
+    append: true
+  become: true
+- name: Update apt cache
+  apt:
+    update-cache: true
+  become: true
+- name: Install zsh
+  apt:
+    name: zsh
+  become: true
+- name: Install curl
+  apt:
+    name: curl
+  become: true

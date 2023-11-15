@@ -1,0 +1,14 @@
+- hosts: a
+  tasks:
+    - name: Set up development environment
+      import_role:
+        name: devs
+    - name: Set up Docker
+      import_role:
+        name: docker
+    - name: Set up Jenkins
+      import_role:
+        name: jenkins
+    - name: Set up nginx with custom html
+      import_role:
+        name: nginx
