@@ -22,7 +22,7 @@
   - name: Git clone specified repo
     git:
       repo: "{{ repository }}"
-      path: "{{ path }}"
+      dest: "{{ path }}"
   handlers:
     - name: Restart nginx
       service:
