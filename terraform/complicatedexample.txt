@@ -1,0 +1,74 @@
+resource "aws_security_group" "ingress-all-test" {
+
+  name = "allow-all-sg"
+
+  ingress {
+    cidr_blocks = [
+      "0.0.0.0/0"
+    ]
+
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+  }
+
+  // Terraform removes the default rule
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+}
+resource "aws_default_vpc" "default" {
+  tags = {
+    Name = "Default VPC"
+  }
+}
+
+
+
+resource "aws_security_group" "aws_sg" {
+  name = "security group from terraform"
+
+  ingress {
+    description = "SSH from the internet"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "80 from the internet"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+}
+
+resource "aws_instance" "instance" {
+  ami                         = "ami-0fb391cce7a602d1f"
+  instance_type               = "t2.micro"
+  associate_public_ip_address = true
+  key_name                    = "ssh-key"
+  vpc_security_group_ids      = [aws_security_group.aws_sg.id]
+}
+output "instance_ip" {
+  description = "The public ip for ssh access"
+  value       = aws_instance.instance.public_ip
+}
+resource "aws_key_pair" "ssh-key" {
+  key_name   = "ssh-key"
+  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCYyUwL4DvfEmo3EHfBVQTT7eh/xrtXG6qsMKvfRGiaKdePQyzjpNNIrsQ2Cr4Lg+P9ibWp+GxY+t4k3icJEztL4TRF6ktpPpsTdRbn02E1goBdTJgxHTY1kKVc2cnZkZ3vdx9GX2P3Na+x4bxNjDFqB4pDmN/2DEJO+IGYma3b3pXRVsXPKygkrhQf3qHy4gKwmt6XdZqGiSPIgwtFKN8TAi20F52OhTR8DLSoEMLHUeBSxKrbu1stfFvgsC+dedmFB7EsJK5vwTq+qGeSdDKL3StOQbwFgX9mVGfSkE1WahUvQDyDNlB8jNo70vQQIyKi39jJLCSrnXQpDshn2+WjuLttJzlJbiBfhPjgDzdrO+rRhtNvHnW1LNmnHoJr+6NIExxt27Kakd4TYlOIwOgtc7Fr43sGIRJHFe1PfumrZ5RXX9yt0C/ZQmnhf8TCtPOyhYbp+QDaeqUfY6QKlOPci+19WA0GCaRZj5OiKE2diqlHAgwHDhlAZ5JIwEiG2fk="
+}
